@@ -16,6 +16,7 @@
     "url": "https://photonstorm@github.com/photonstorm/phaser.git"
   },
   "scripts": {
+    "start": "npm run build && webpack-dev-server --host=0.0.0.0 --port=$PORT",
     "beta": "npm publish --tag beta",
     "help": "node scripts/help.js",
     "build": "webpack --config config/webpack.config.js",
@@ -85,5 +86,6 @@
   },
   "engines": {
     "node": "12.18.4"
-  }
+  },
+  "heroku-run-build-script": true
 }
