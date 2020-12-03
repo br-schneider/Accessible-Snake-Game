@@ -1,9 +1,9 @@
 var config = {
-    type: Phaser.AUTO,
-    //width: 640
+    type: Phaser.WEBGL,
     width: 1130,
     height: 480,
     backgroundColor: '#ffffff',
+    parent: 'phaser-example',
     scene: {
         preload: preload,
         create: create,
@@ -32,8 +32,6 @@ function preload ()
     this.load.image('food', 'assets/img/food.png');
     this.load.image('body', 'assets/img/body.png');
 }
-
-///////////////////////////////////////////////////////
 
 function create ()
 {
@@ -89,6 +87,11 @@ function create ()
     });
 
 
+
+
+    var counter = 0;
+
+
     var Food = new Phaser.Class({
 
         Extends: Phaser.GameObjects.Image,
@@ -110,7 +113,9 @@ function create ()
 
         eat: function ()
         {
+            counter++;
             this.total++;
+            document.getElementById("score").innerHTML = "Score: " + counter;
         }
 
     });
@@ -217,10 +222,10 @@ function create ()
             //  If they do, the head ran into the body
 
             var hitBody = Phaser.Actions.GetFirst(this.body.getChildren(), { x: this.head.x, y: this.head.y }, 1);
-            
+
             if (hitBody)
             {
-                console.log('dead');
+                window.alert("Game Over! \nClick the reset game button in the navigation bar to try again!");
 
                 this.alive = false;
 
@@ -228,10 +233,8 @@ function create ()
             }
             else
             {
-                console.log('alive');
                 //  Update the timer ready for the next movement
                 this.moveTime = time + this.speed;
-
 
                 return true;
             }
@@ -291,12 +294,13 @@ function create ()
     cursors = this.input.keyboard.createCursorKeys();
 }
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 function update (time, delta)
 {
+    if (!snake.alive)
+    {
+        return;
+    }
+
     /**
     * Check which key is pressed, and then change the direction the snake
     * is heading based on that. The checks ensure you don't double-back
@@ -331,10 +335,6 @@ function update (time, delta)
         }
     }
 }
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 /**
 * We can place the food anywhere in our 40x30 grid
